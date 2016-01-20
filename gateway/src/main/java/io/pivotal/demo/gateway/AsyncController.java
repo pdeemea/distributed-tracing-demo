@@ -42,7 +42,7 @@ public class AsyncController  {
 	
 	
 	@RequestMapping(value = "open", method = RequestMethod.POST)
-	public ListenableFuture<ResponseEntity<Position>> open(@RequestBody TradeRequest request) throws InterruptedException, ExecutionException {
+	public ListenableFuture<ResponseEntity<SynchronousController.Position>> open(@RequestBody SynchronousController.TradeRequest request) throws InterruptedException, ExecutionException {
 		Span span = traceManager.getCurrentSpan();
 
 		log.info("Opening trade {} {} @ {}", request.account, request.amount, span.getTraceId());
@@ -50,8 +50,10 @@ public class AsyncController  {
 		span.addAnnotation("account", request.account);
 		
 		// First async rest call: Execute the trade by calling market Gateway Restful service.  
-		ListenableFuture<ResponseEntity<Trade>> openedMktTrade = this.asyncRestTemplate.postForEntity(marketgw + "/openTrade", 
-				new HttpEntity<TradeRequest>(request), Trade.class);
+		ListenableFuture<ResponseEntity<SynchronousController.Trade>> openedMktTrade = this.asyncRestTemplate.postForEntity(
+				marketgw + "/openTrade", 
+				new HttpEntity<SynchronousController.MktTradeRequest>(new SynchronousController.MktTradeRequest(request)),
+				SynchronousController.Trade.class);
 
 //		openedMktTrade.addCallback(t -> {
 //			
@@ -88,51 +90,7 @@ public class AsyncController  {
 		
 	}
 	
-	public static class Trade {
-		public String id;
-		public String symbol;
-		public Date tradeDt;
-		public String lp;
-		public double rate;
-		public double amount;
-		
-		public Trade(String id, String symbol, double rate, double amount) {
-			super();
-			this.id = id;
-			this.symbol = symbol;
-			this.rate = rate;
-			this.amount = amount;
-		}	
-		public Trade() {
-			
-		}
-		
-	}
-	
-	public static class Position {
-		public String id;
-		public String account;
-		public double rate;
-		public double amount;
-		
-		public Position(String id, String account, double rate, double amount) {
-			super();
-			this.id = id;
-			this.account = account;
-			this.rate = rate;
-			this.amount = amount;
-		}	
-		public Position() {
-			
-		}
-		
-	}
-	
-	public static class TradeRequest {
-		public String account;
-		public double amount;
-	}
-	
+
 	
 }
 
