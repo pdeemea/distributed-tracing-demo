@@ -130,8 +130,8 @@ Pending to do
 
 <h3>Issues to be solved</h3>
 <ul>
-<li>how do I configure the requests I want Sleuth to track? It seems it is tracking every incoming requests, eg. /somecrazyrequest will produce a 
-span event</li>
+<li>how do I configure Sleuth not to generate a span event for unmapped routes? It seems it is tracking every incoming requests, eg. /somecrazyrequest will produce a 
+span event. There is a TraceFilter used to filter some mappings like /info and others. But this is not enough. </li>
 </ul>
 
 
