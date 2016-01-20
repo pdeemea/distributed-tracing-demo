@@ -17,7 +17,7 @@ This project consists of 3 standalone applications: A <b>gateway</b> application
                                      <-----Trade---------------------------
 
                                      calculate some complex value (we need to trace the time spent)
-   											
+                                        										
                                      -------http://localhost:8002/openPosition----> [portfoliomgr app : PortfolioController class]
                                      <-----Trade---------------------------
 <-----Trade---------------------------										  
