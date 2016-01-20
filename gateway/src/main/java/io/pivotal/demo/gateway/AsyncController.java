@@ -25,6 +25,7 @@ import io.pivotal.demo.gateway.SynchronousController.Position;
 import io.pivotal.demo.gateway.SynchronousController.Trade;
 import io.pivotal.demo.gateway.SynchronousController.TradeRequest;
 
+
 @RestController
 @RequestMapping("/async")
 public class AsyncController {
@@ -79,66 +80,8 @@ public class AsyncController {
 		return deferredResult; 
 
 	}
-	@RequestMapping(value = "open2", method = RequestMethod.POST)
-	public DeferredResult<SynchronousController.Position> open2(
-			@RequestBody SynchronousController.TradeRequest request) throws InterruptedException, ExecutionException {
-		Span span = traceManager.getCurrentSpan();
 
-		log.info("Opening trade {} {} @ {}", request.account, request.amount, span.getTraceId());
-
-		span.addAnnotation("account", request.account);
-
-		DeferredResult<SynchronousController.Position> deferredResult = new DeferredResult<>();
-
-		// First async rest call: Execute the trade by calling market Gateway
-		// Restful service.
-		ListenableFuture<ResponseEntity<SynchronousController.Trade>> openedMktTrade = this.asyncRestTemplate
-				.postForEntity(marketgw + "/openTrade", new HttpEntity<SynchronousController.MktTradeRequest>(
-						new SynchronousController.MktTradeRequest(request)), SynchronousController.Trade.class);
-
-		openedMktTrade.addCallback((ResponseEntity<SynchronousController.Trade> t) -> {
-			
-			DealDone deal = applySpread(request, t.getBody());
-			
-			ListenableFuture<ResponseEntity<SynchronousController.Position>> openedPosition = this.asyncRestTemplate
-					.postForEntity(portfoliomgr + "/openPosition", new HttpEntity<SynchronousController.DealDone>(deal),
-							SynchronousController.Position.class);
-			
-			openedPosition.addCallback((ResponseEntity<SynchronousController.Position> p) -> {
-	            deferredResult.setResult(p.getBody());				
-			}, e -> {
-				deferredResult.setErrorResult(e);
-			});
-                
-		}, e -> {
-			deferredResult.setErrorResult(e);
-		}
-        );
-		
-		return deferredResult; 
-
-	}
-    @RequestMapping(value = "/deferred", method = RequestMethod.GET, produces = "text/html")
-    public DeferredResult<String> executeSlowTask() {
-        log.info("Request received");
-        DeferredResult<String> deferredResult = new DeferredResult<>();
-        CompletableFuture.supplyAsync(AsyncController::execute)
-            .whenCompleteAsync((result, throwable) -> deferredResult.setResult(result));
-        log.info("Servlet thread released");
-        
-        return deferredResult;
-    }
-
-    private static String execute() {
-    	try {
-			Thread.sleep(2000);
-			return "hello";
-		} catch (InterruptedException e) {
-			return "interrupted";
-		}
-    }
-    
-	/**
+   	/**
 	 * Calculate other complex value. Track the time spent.  
 	 * @throws InterruptedException 
 	 */
