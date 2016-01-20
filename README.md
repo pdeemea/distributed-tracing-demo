@@ -18,8 +18,8 @@ Request:<p>
 </code>
 <p>
 Response:<p>
-<code>
-<pre> 
+<pre>
+<code> 
 HTTP/1.1 200 OK
 Server: Apache-Coyote/1.1
 X-Trace-Id: 945a8afc-6cc5-4c3a-abfb-cd77c2c4b079
@@ -30,8 +30,8 @@ Transfer-Encoding: chunked
 Date: Tue, 19 Jan 2016 19:24:13 GMT
 
 {"id":"916d50c0-01b3-436a-93aa-7c76a5692d7d","account":"bob","rate":0.5494186987570098,"amount":100.0}
-</pre>
 </code>
+</pre>
 
 <p>Sleuth creates a Trace-Id that will use for as long as the request last. It will be the distributed transaction reference used across all the services invoked as part of each request. For each request's handler, Sleuth creates another identifier called Span-id. For instance, every @RequestMapping has its own span-id.
 
