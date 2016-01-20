@@ -71,26 +71,6 @@ public class AsyncController  {
 	}
 	
 
-	/**
-	 * Calculate other complex value. Track the time spent.  
-	 */
-	public void calculateSomeOtherComplexValue(Trade trade) {
-	
-		Span span = traceManager.getCurrentSpan();
-		
-		span.addTimelineAnnotation("StartCalculation");
-		// do something
-		try {
-			Thread.sleep(250);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		span.addTimelineAnnotation("EndCalculation");
-		
-	}
-	
-
 	
 }
 
