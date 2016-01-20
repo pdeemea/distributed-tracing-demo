@@ -10,20 +10,17 @@ This project consists of 3 standalone applications: A <b>gateway</b> application
 
      
 <h3>Goal: Demonstrate how we can trace the execution of a request as it traverses several applications using synchronous invocations to external Restful services</h3>
-
  <code>
  <pre>
- 
-   ----http://localhost:8008/open---> [ Gateway app : SynchronousController class ] 
-   											-------http://localhost:8081/openTrade----> [market-gw app : MarketController class]
-   											<-----Trade---------------------------
+----http://localhost:8008/open---> [ Gateway app : SynchronousController class ] 
+                                     -------http://localhost:8081/openTrade----> [market-gw app : MarketController class]
+                                     <-----Trade---------------------------
+
+                                     calculate some complex value (we need to trace the time spent)
    											
-   											calculate some complex value (we need to trace the time spent)
-   											
-   											-------http://localhost:8002/openPosition----> [portfoliomgr app : PortfolioController class]
-   											<-----Trade---------------------------
-   <-----Trade------------------------------------										
-  
+                                     -------http://localhost:8002/openPosition----> [portfoliomgr app : PortfolioController class]
+                                     <-----Trade---------------------------
+<-----Trade---------------------------										  
   </code> 											
   </pre>
    
