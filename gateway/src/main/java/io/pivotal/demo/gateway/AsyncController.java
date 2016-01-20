@@ -1,5 +1,6 @@
 package io.pivotal.demo.gateway;
 
+import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 import org.slf4j.Logger;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.AsyncRestTemplate;
+import org.springframework.web.client.RestTemplate;
 
 @RestController
 @RequestMapping("/async")
@@ -28,7 +30,10 @@ public class AsyncController  {
 	
 	@Autowired
 	private AsyncRestTemplate asyncRestTemplate;
-	
+
+	@Autowired
+	private RestTemplate restTemplate;
+
 	@Value("${marketgw}") 
 	private String marketgw;
 	
@@ -37,7 +42,7 @@ public class AsyncController  {
 	
 	
 	@RequestMapping(value = "open", method = RequestMethod.POST)
-	public ListenableFuture<ResponseEntity<Trade>> open(@RequestBody TradeRequest request) throws InterruptedException, ExecutionException {
+	public ListenableFuture<ResponseEntity<Position>> open(@RequestBody TradeRequest request) throws InterruptedException, ExecutionException {
 		Span span = traceManager.getCurrentSpan();
 
 		log.info("Opening trade {} {} @ {}", request.account, request.amount, span.getTraceId());
@@ -48,6 +53,14 @@ public class AsyncController  {
 		ListenableFuture<ResponseEntity<Trade>> openedMktTrade = this.asyncRestTemplate.postForEntity(marketgw + "/openTrade", 
 				new HttpEntity<TradeRequest>(request), Trade.class);
 
+//		openedMktTrade.addCallback(t -> {
+//			
+//			calculateSomeOtherComplexValue(t.getBody());
+//			
+//			restTemplate.postForObject(portfoliomgr + "/openPosition", trade, Trade.class);
+//			
+//			
+//		}, e -> { } );
 		// TODO when we receive an openedMktTrade we call calculateSomeOehterComplexValue and then we asynchronously call
 		// the Restful service positionMgr.
 		
@@ -77,32 +90,44 @@ public class AsyncController  {
 	
 	public static class Trade {
 		public String id;
-		public String account;
-		public Trade(String id, String account) {
+		public String symbol;
+		public Date tradeDt;
+		public String lp;
+		public double rate;
+		public double amount;
+		
+		public Trade(String id, String symbol, double rate, double amount) {
 			super();
 			this.id = id;
-			this.account = account;
+			this.symbol = symbol;
+			this.rate = rate;
+			this.amount = amount;
 		}	
 		public Trade() {
 			
 		}
 		
 	}
-	public static class OpenedTrade {
+	
+	public static class Position {
 		public String id;
 		public String account;
+		public double rate;
 		public double amount;
-		public OpenedTrade(String id, String account, double amount) {
+		
+		public Position(String id, String account, double rate, double amount) {
 			super();
 			this.id = id;
 			this.account = account;
+			this.rate = rate;
 			this.amount = amount;
 		}	
-		public OpenedTrade() {
+		public Position() {
 			
 		}
 		
 	}
+	
 	public static class TradeRequest {
 		public String account;
 		public double amount;

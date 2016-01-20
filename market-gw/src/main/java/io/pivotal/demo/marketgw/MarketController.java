@@ -1,5 +1,6 @@
 package io.pivotal.demo.marketgw;
 
+import java.util.Date;
 import java.util.Random;
 import java.util.UUID;
 
@@ -17,34 +18,40 @@ public class MarketController {
 	private TraceManager traceManager;
 	
 	@RequestMapping(value = "openTrade", method = RequestMethod.POST)
-	public Trade open(@RequestBody TradeRequest request) {
+	public Trade open(@RequestBody MktTradeRequest request) {
 		Random random = new Random();
 		
 		traceManager.addAnnotation("mkt", String.valueOf(random.nextLong()));
-		return new Trade(UUID.randomUUID().toString(), request.account, random.nextDouble(), request.amount);
+		return new Trade(UUID.randomUUID().toString(), request.symbol, "LP" + random.nextInt(), random.nextDouble(), request.amount);
 	}
 	
+
 	public static class Trade {
 		public String id;
-		public String account;
+		public String symbol;
+		public Date tradeDt;
+		public String lp;
 		public double rate;
 		public double amount;
 		
-		public Trade(String id, String account, double rate, double amount) {
+		public Trade(String id, String symbol, String lp, double rate, double amount) {
 			super();
 			this.id = id;
-			this.account = account;
+			this.symbol = symbol;
+			this.lp = lp;
 			this.rate = rate;
 			this.amount = amount;
+			this.tradeDt = new Date();
 		}	
 		public Trade() {
 			
 		}
 		
 	}
-	public static class TradeRequest {
-		public String account;
+	public static class MktTradeRequest {
+		public String symbol;
 		public double amount;
+		
 	}
 	
 }

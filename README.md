@@ -16,16 +16,19 @@ This project consists of 3 standalone applications: A <b>gateway</b> application
 ----http://localhost:8008/open---> [ Gateway app : SynchronousController class ] 
                                      -------http://localhost:8081/openTrade----> [market-gw app : MarketController class]
                                      <-----Trade---------------------------
-                                     calculate some complex value with the Trade (we need to trace the time spent here)
-                                     ...             										
+                                     ...
+                                     apply spread to Trade and produce a DealDone
+                                     ... 
+                                     ...  // send DealDone to portfoliomgr           										
                                      -------http://localhost:8002/openPosition----> [portfoliomgr app : PortfolioController class]
-                                     <-----Trade---------------------------
+                                     <-----Position---------------------------
 <-----Trade---------------------------										  
   </pre>
    
 Request:<p>
 <code> 
-   curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X POST -d '{"account":"bob","amount":100}' http://localhost:8080/open
+   curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X POST -d '{"account":"bob","amount":100,"symbol":"EUR/USD"}' http://localhost:8080/open
+
 </code>
 <p>
 Response:<p>
@@ -40,7 +43,7 @@ Content-Type: application/json;charset=UTF-8
 Transfer-Encoding: chunked
 Date: Tue, 19 Jan 2016 19:24:13 GMT
 
-{"id":"916d50c0-01b3-436a-93aa-7c76a5692d7d","account":"bob","rate":0.5494186987570098,"amount":100.0}
+{"id":1250656390455939089,"account":"bob","symbol":"EUR/USD","rate":0.01058461760416928,"amount":100.0}
 </code>
 </pre>
 
