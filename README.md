@@ -28,7 +28,6 @@ This project consists of 3 standalone applications: A <b>gateway</b> application
 Request:<p>
 <code> 
    curl -i -H "Accept: application/json" -H "Content-Type: application/json" -X POST -d '{"account":"bob","amount":100,"symbol":"EUR/USD"}' http://localhost:8080/open
-
 </code>
 <p>
 Response:<p>
@@ -104,9 +103,25 @@ Distributed tracing captured in the standard output in the market-gw app:<p>
 Sleuth is responsible of carrying the trace-Id across remote Restful calls. 
 
 <h3>Goal: Demonstrate how we can trace the execution of a request as it traverses several applications using asynchronous invocations to external Restful services</h3>
-The Use case is practically same as the synchronous one with the exception that this time the 2 internal Restful requests are done asynchronously. What has this anything to do with Sleuth? The thread that created the Trace-id is gone! this was the servlet's thread that handled the initial request. The responses from the internal restful request are now handled by a different thread. Sleuth has to be able to propagate the trace-id from the http response to the thread handling the response.
+The Use case is practically same as the synchronous one with the exception that this time the 2 internal Restful requests are done asynchronously. Furthermore, the @RequestMapping method that attends the request in the Gateway is also asynchronous, i.e. it does not return a result but a <code>ListenableFuture<Position></code>. 
 
-Work in progress
+What has this anything to do with Sleuth? Sleuth has to keep sending the trace-id to downstream services. And in addition to that, the thread that created the Trace-id is gone! this was the servlet's thread that handled the initial request. The responses from the internal restful request are now handled by a different thread. Sleuth has to be able to propagate the trace-id from the http response to the thread handling the response.
+
+<b>This is a piece of functionality not supported yet by Spring.</b>
+ 
+ <pre>
+----http://localhost:8008/open---> [ Gateway app : AsyncController class ] 
+                                     -------http://localhost:8081/openTrade----> [market-gw app : MarketController class]
+                                     {Nio thread}<-----Trade---------------------------
+                                            ...
+                                            apply spread to Trade and produce a DealDone
+                                            ... 
+                                            ...  // send DealDone to portfoliomgr           										
+                                            -------http://localhost:8002/openPosition----> [portfoliomgr app : PortfolioController class]
+                                            <-----Position---------------------------
+<-----Trade----------------------------------										  
+  </pre>
+
 
 <h3>Use Case - Messaging collaboration</h3>
 This time the Gateway application sends a message/request to one of the internal applications. Sleuth has to be able to propagate the trace-id over to the receiver of the message/request. 

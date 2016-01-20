@@ -59,7 +59,8 @@ public class AsyncController {
 		DeferredResult<SynchronousController.Position> deferredResult = new DeferredResult<>();
 
 		// First async rest call: Execute the trade by calling market Gateway
-		// Restful service.
+		// Restful service.ç
+		
 		ListenableFuture<ResponseEntity<SynchronousController.Trade>> openedMktTrade = this.asyncRestTemplate
 				.postForEntity(marketgw + "/openTrade", new HttpEntity<SynchronousController.MktTradeRequest>(
 						new SynchronousController.MktTradeRequest(request)), SynchronousController.Trade.class);
