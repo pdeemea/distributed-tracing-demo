@@ -1,0 +1,6 @@
+server.port: 8082
+
+spring.sleuth.log:
+  json.enabled: true
+  slf4j.enabled: false
+  

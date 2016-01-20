@@ -1,0 +1,11 @@
+marketgw: http://localhost:8081
+portfoliomgr: http://localhost:8082
+
+spring.sleuth.log:
+  json.enabled: true
+  slf4j.enabled: false
+
+
+logging:
+  level:
+    io.pivotal.demo.gateway: DEBUG  
