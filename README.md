@@ -2,8 +2,8 @@
 This project has been created to demonstrate the following goals using <a href="https://github.com/spring-cloud/spring-cloud-sleuth">Spring Cloud Sleuth</a>: 
  <ul>
  <li>Show we can trace the execution of a request as it traverses multiple applications</li>
- <li>Show various mechanisms used by application to collaborate each other: synchronous calls, asynchronous calls, messaging</li>
- <li>Show how we can capture request details</li> 
+ <li>Show various mechanisms used by applications to collaborate between each other: synchronous Restful calls, asynchronous Restful calls, messaging</li>
+ <li>Show how we can capture custom request details</li> 
  </ul>   
 
 This project consists of 3 standalone applications: A <b>gateway</b> application which acts as a facade and two internal applications, <b>marketgw</b> and <b>portfoliomgr</b>. The gateway exposes a Restful endpoint "/open" which delegates to another two Restful endpoints exposed by the two internal apps.
