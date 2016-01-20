@@ -58,19 +58,18 @@ We can see this annotation in the generated tracing under the attribute "annotat
 </li>
 <li>Timestamps, e.g. timestamp when we started calculating a complex value and timestamp we completed it:
 <pre><code>
-	public void calculateSomeOtherComplexValue(Trade trade) {
+	public DealDone applySpread(TradeRequest request, Trade trade) throws InterruptedException {
 	
 		Span span = traceManager.getCurrentSpan();
 		
-		span.addTimelineAnnotation("StartCalculation");
 		// do something
 		try {
 			Thread.sleep(250);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			double price = trade.rate + 0.01; // very simplistic spread. 
+			return new DealDone(trade.id, trade.symbol, request.account, price, trade.amount);
+		} finally {
+			span.addTimelineAnnotation("AppliedSpread");
 		}
-		span.addTimelineAnnotation("EndCalculation");
 		
 	}
 </code></pre>
