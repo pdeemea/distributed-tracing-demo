@@ -15,7 +15,6 @@ This project consists of 3 standalone applications: A <b>gateway</b> application
 ----http://localhost:8008/open---> [ Gateway app : SynchronousController class ] 
                                      -------http://localhost:8081/openTrade----> [market-gw app : MarketController class]
                                      <-----Trade---------------------------
-
                                      calculate some complex value (we need to trace the time spent)
                                         										
                                      -------http://localhost:8002/openPosition----> [portfoliomgr app : PortfolioController class]
