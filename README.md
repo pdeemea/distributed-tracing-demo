@@ -5,14 +5,29 @@ This project has been created to demonstrate the following goals using <a href="
  <li>Demonstrate tracing regardless of the remoting technology used: synchronous Restful calls, asynchronous Restful calls, messaging</li>
  <li>Trace custom request details</li> 
  </ul>   
+
+Before going any further I think it is worth describing what we need to achieve and how Sleuth works.
+<p>
+<b>Requirements -</b> 
+Let's say we have a Restful application which exposes an operation mapped to the route <code>/open</code>. As soon as the application receives a request, we want to create a unique identifier and once the request is handled we want to log the name of the request, its unique identifier, when the request was invoked and when it was processed so that we can measure the time spent. To make things more interesting, our request makes a call to another Restful service, eg. <code>/doAnotherThing</code>. We also want that Restful service to log the request and the time spent processing it and more importantly, we want it to use the same unique identifier created by the outer Restful service so that we can correlate them later on.
+<p>
+<b>How Sleuth works -</b> 
+Upon the arrival of HTTP request, Sleuth creates a unique identifier called <b>Trace-id</b>. This is true provided the incoming request does not carry a HTTP header called <b>X-Trace-id</b>. Typically, the first request won't have that header and therefore Sleuth creates a brand new <b>Trace-id</b>. Later on, if our Restful application makes a downstream HTTP request, Sleuth intercepts it and adds the unique identifier to the <b>X-Trace-Id</b> HTTP header. When the downstream Restful application receives the request, Sleuth (we are assuming the downstream application uses Sleuth too) intercepts the HTTP request, extracts the unique identifier from the <b>X-Trace-Id</b> HTTP header and binds it to the current thread. When the application fully handle a request, Sleuth produces a tracing event. This event essentially contains the name of the request, the unique identifier, the time when it started and ended along with further details.   
+   
+<br>This could be the sample logging we would expect. See that we have one statement per application. 
+<code><pre>
+[outerRestApp.log] ["requestUri":"/open", "begin":1453233385739, "end": 1453233386017]
+[innerRestApp.log] ["requestUri":"/doAnotherThing", "begin":1453233385740, "end": 1453233386058]
+</pre></code>  
+
+ 
 <b>Note</b>: Tracing will be collected in the standard output using a json format. There are other means to collect tracing. For instance, we can use Zipkin or send the tracing to a messaging endpoint. To know how to configure zipkin or messaging check out the <a href="https://github.com/spring-cloud/spring-cloud-sleuth">official documentation</a>. 
 
 This project consists of 3 standalone applications: A <b>gateway</b> application which acts as a facade and two internal applications, <b>marketgw</b> and <b>portfoliomgr</b>. The gateway exposes a Restful endpoint "/open" which delegates to another two Restful endpoints exposed by the two internal apps, "/openTrade" and "/openPosition" respectively.
 
-     
+
 <h3>Goal: Demonstrate how we can trace the execution of a request as it traverses several applications using synchronous invocations to external Restful services</h3>
- 
- <pre>
+
 ----http://localhost:8008/open---> [ Gateway app : SynchronousController class ] 
                                      -------http://localhost:8081/openTrade----> [market-gw app : MarketController class]
                                      <-----Trade---------------------------
