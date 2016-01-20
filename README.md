@@ -55,7 +55,7 @@ Date: Tue, 19 Jan 2016 19:24:13 GMT
 We can see this annotation in the generated tracing under the attribute "annotations". See below.
 <p>  
 </li>
-<li>Timestamps, e.g. timestamp when we started calculating a complex value and timestamp we completed it:
+<li>Timestamps, e.g. Say we want to capture the time when we calculated the spread and before we send the position to the PositionManager.
 <pre><code>
 	public DealDone applySpread(TradeRequest request, Trade trade) throws InterruptedException {
 	
