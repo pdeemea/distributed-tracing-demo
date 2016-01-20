@@ -107,7 +107,7 @@ The Use case is practically same as the synchronous one with the exception that 
 
 What has this anything to do with Sleuth? Sleuth has to keep sending the trace-id to downstream services. And in addition to that, the thread that created the Trace-id is gone! this was the servlet's thread that handled the initial request. The responses from the internal restful request are now handled by a different thread. Sleuth has to be able to propagate the trace-id from the http response to the thread handling the response.
 
-<b>This is a piece of functionality not supported yet by Spring.</b>
+<b>This is a piece of functionality not supported by Spring yet</b>
  
  <pre>
 ----http://localhost:8008/open---> [ Gateway app : AsyncController class ] 
