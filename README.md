@@ -1,10 +1,11 @@
-# Proof of Concept to demonstrate Distributed Tracing 
+# Proof of Concept to demonstrate Distributed Tracing using Spring Cloud Sleuth
 This project has been created to demonstrate the following goals using <a href="https://github.com/spring-cloud/spring-cloud-sleuth">Spring Cloud Sleuth</a>: 
  <ul>
  <li>Trace the execution of a request as it traverses multiple applications</li>
  <li>Demonstrate tracing regardless of the remoting technology used: synchronous Restful calls, asynchronous Restful calls, messaging</li>
  <li>Trace custom request details</li> 
  </ul>   
+<b>Note</b>: Tracing will be collected in the standard output using a json format. There are other means to collect tracing. For instance, we can use Zipkin or send the tracing to a messaging endpoint. To know how to configure zipkin or messaging check out the <a href="https://github.com/spring-cloud/spring-cloud-sleuth">official documentation</a>. 
 
 This project consists of 3 standalone applications: A <b>gateway</b> application which acts as a facade and two internal applications, <b>marketgw</b> and <b>portfoliomgr</b>. The gateway exposes a Restful endpoint "/open" which delegates to another two Restful endpoints exposed by the two internal apps, "/openTrade" and "/openPosition" respectively.
 
@@ -20,8 +21,6 @@ This project consists of 3 standalone applications: A <b>gateway</b> application
                                      -------http://localhost:8002/openPosition----> [portfoliomgr app : PortfolioController class]
                                      <-----Trade---------------------------
 <-----Trade---------------------------										  
-
-
   </pre>
    
 Request:<p>
