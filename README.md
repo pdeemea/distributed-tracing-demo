@@ -83,7 +83,7 @@ Distributed tracing captured in the standard output in the gateway app:<p>
 <b>"traceId"</b>:"8cde3cb5-937a-4ee7-bc70-f8dc3b14ab8c","parents":[],
 "spanId":"8cde3cb5-937a-4ee7-bc70-f8dc3b14ab8c","remote":false,"exportable":false,
 <b>"annotations":{"account":"bob"}</b>,"processId":null,
-<b>"timelineAnnotations":[{"time":1453233385751,"msg":"StartCalculation"},{"time":1453233386005,"msg":"EndCalculation"}]</b>,"running":false,"accumulatedMillis":278}
+<b>"timelineAnnotations":[{"time":1453233385751,"msg":"AppliedSpread"}]</b>,"running":false,"accumulatedMillis":278}
 [endspan]
 </code></pre>
  
