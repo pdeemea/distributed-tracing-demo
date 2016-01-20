@@ -25,7 +25,7 @@ Sleuth can collect that event in the standard output, or in a Zipkin server or i
 <h3>About this project</h3> 
 This project consists of 3 standalone applications: A <b>gateway</b> application which acts as a facade and two internal applications, <b>marketgw</b> and <b>portfoliomgr</b>. The gateway exposes a Restful endpoint "/open" which delegates to another two Restful endpoints exposed by the two internal apps, "/openTrade" and "/openPosition" respectively. 
 
-As explained above, Sleuth generate tracing events which can be collected in many ways. One way is by logging them to the standard output. Another way is to send them to a Zipkin server or to a queue/topic. This project will collect them in standard output using Json format. To know how to configure zipkin or messaging check out the <a href="https://github.com/spring-cloud/spring-cloud-sleuth">official documentation</a>. 
+As explained above, Sleuth generates tracing events which can be collected in many ways. One way is by logging them to the standard output. Another way is to send them to a Zipkin server or to a queue/topic. This project will collect them in standard output using Json format. To know how to configure zipkin or messaging check out the <a href="https://github.com/spring-cloud/spring-cloud-sleuth">official documentation</a>. 
 
 
 <h3>Goal: Demonstrate how we can trace the execution of a request as it traverses several applications using synchronous invocations to external Restful services</h3>
