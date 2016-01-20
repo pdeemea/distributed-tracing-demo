@@ -1,5 +1,5 @@
 # Proof of Concept to demonstrate Distributed Tracing 
-This project has been created to demonstrate how we can use Spring Cloud Sleuth to implement distributed tracing in a distributed architecture composed of several applications that interact each other. There are 3 goals we want to achieve:
+This project has been created to demonstrate the following goals using <a href="https://github.com/spring-cloud/spring-cloud-sleuth">Spring Cloud Sleuth</a>: 
  <ul>
  <li>Show we can trace the execution of a request as it traverses multiple applications</li>
  <li>Show various mechanisms used by application to collaborate each other: synchronous calls, asynchronous calls, messaging</li>
