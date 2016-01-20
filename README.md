@@ -33,7 +33,31 @@ Date: Tue, 19 Jan 2016 19:24:13 GMT
 </code>
 </pre>
 
-<p>Sleuth creates a Trace-Id that will use for as long as the request last. It will be the distributed transaction reference used across all the services invoked as part of each request. For each request's handler, Sleuth creates another identifier called Span-id. For instance, every @RequestMapping has its own span-id.
+<p>For each incoming request, Sleuth creates a unique identifier and uses it to track the request as it traverses multiple applications. This identifier is called Trace-Id. 
+
+Distributed tracing captured in the standard output in the gateway app:<p>
+<pre><code>
+[span]{"begin":1453233385739,"end":1453233386017,
+<b>"name"</b>:"http/open",
+<b>"traceId"</b>:"8cde3cb5-937a-4ee7-bc70-f8dc3b14ab8c","parents":[],
+"spanId":"8cde3cb5-937a-4ee7-bc70-f8dc3b14ab8c","remote":false,"exportable":false,
+"annotations":{"account":"bob"},"processId":null,
+"timelineAnnotations":[{"time":1453233385751,"msg":"StartCalculation"},{"time":1453233386005,"msg":"EndCalculation"}],"running":false,"accumulatedMillis":278}
+[endspan]
+</code></pre>
+ 
+Distributed tracing captured in the standard output in the market-gw app:<p>
+<pre><code>
+[span]{"begin":1453233385745,"end":1453233385750,
+"name":"http/openTrade",
+"traceId":"8cde3cb5-937a-4ee7-bc70-f8dc3b14ab8c",
+"parents":["8cde3cb5-937a-4ee7-bc70-f8dc3b14ab8c"],
+"spanId":"2731612c-9b22-4320-8292-a7cbf82f3e1e","remote":false,"exportable":true,
+"annotations":{"/http/request/uri":"http://localhost:8081/openTrade","/http/request/endpoint":"/openTrade","/http/request/method":"POST","/http/request/headers/accept":"application/json, application/*+json","/http/request/headers/content-type":"application/json;charset=UTF-8","/http/request/headers/x-trace-id":"8cde3cb5-937a-4ee7-bc70-f8dc3b14ab8c","/http/request/headers/x-span-id":"8cde3cb5-937a-4ee7-bc70-f8dc3b14ab8c","/http/request/headers/x-span-name":"http/open","/http/request/headers/user-agent":"Java/1.8.0_45","/http/request/headers/host":"localhost:8081","/http/request/headers/connection":"keep-alive","/http/request/headers/content-length":"32","mkt":"6915959203315918557","/http/response/status_code":"200","/http/response/headers/x-trace-id":"8cde3cb5-937a-4ee7-bc70-f8dc3b14ab8c","/http/response/headers/x-span-id":"2731612c-9b22-4320-8292-a7cbf82f3e1e","/http/response/headers/x-application-context":"bootstrap:8081","/http/response/headers/content-type":"application/json;charset=UTF-8","/http/response/headers/transfer-encoding":"chunked","/http/response/headers/date":"Tue, 19 Jan 2016 19:56:25 GMT"},"processId":null,
+"timelineAnnotations":[],"running":false,"accumulatedMillis":5}
+[endspan]
+</code></pre>
+ 
 
 Sleuth is responsible of carrying the trace-Id across remote Restful calls. 
 

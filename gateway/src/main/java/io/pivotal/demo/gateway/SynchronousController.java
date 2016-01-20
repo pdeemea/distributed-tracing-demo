@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 @RestController
-public class VanillController  {
+public class SynchronousController  {
 
-	private static Logger log = LoggerFactory.getLogger(VanillController.class);
+	private static Logger log = LoggerFactory.getLogger(SynchronousController.class);
 	
 	@Autowired
 	private TraceManager traceManager;
