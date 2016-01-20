@@ -6,7 +6,7 @@ This project has been created to demonstrate the following goals using <a href="
  <li>Show how we can capture custom request details</li> 
  </ul>   
 
-This project consists of 3 standalone applications: A <b>gateway</b> application which acts as a facade and two internal applications, <b>marketgw</b> and <b>portfoliomgr</b>. The gateway exposes a Restful endpoint "/open" which delegates to another two Restful endpoints exposed by the two internal apps.
+This project consists of 3 standalone applications: A <b>gateway</b> application which acts as a facade and two internal applications, <b>marketgw</b> and <b>portfoliomgr</b>. The gateway exposes a Restful endpoint "/open" which delegates to another two Restful endpoints exposed by the two internal apps, "/openTrade" and "/openPosition" respectively.
 
      
 <h3>Goal: Demonstrate how we can trace the execution of a request as it traverses several applications using synchronous invocations to external Restful services</h3>
