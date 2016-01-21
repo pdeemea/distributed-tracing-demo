@@ -29,7 +29,7 @@ As explained above, Sleuth generates tracing events which can be collected in ma
 
 
 <h3>Goal: Demonstrate how we can trace the execution of a request as it traverses several applications using synchronous invocations to external Restful services</h3>
-
+<pre>
 ----http://localhost:8008/open---> [ Gateway app : SynchronousController class ] 
                                      -------http://localhost:8081/openTrade----> [market-gw app : MarketController class]
                                      <-----Trade---------------------------
