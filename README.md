@@ -140,10 +140,16 @@ What has this anything to do with Sleuth? Sleuth has to keep sending the trace-i
   </pre>
 
 
-<h3>Use Case - Messaging collaboration</h3>
+<h3>Goal: Demonstrate distributed tracing when applications collaborate via messaging</h3>
 This time the Gateway application sends a message/request to one of the internal applications. Sleuth has to be able to propagate the trace-id over to the receiver of the message/request. 
  
 Pending to do
+
+<h3>Goal: Demonstrate distributed tracing when applications collaborate via Hystrix+Ribbon</h3>
+This time the Gateway application calls downstream applications thru Ribbon and Hystrix. Sleuth has to be able to propagate the trace-id.
+ 
+Pending to do
+
 
 <h3>Issues to be solved</h3>
 <ul>
