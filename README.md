@@ -127,7 +127,7 @@ What has this anything to do with Sleuth? Sleuth has to keep sending the trace-i
 <b>This is a piece of functionality not <a href="https://github.com/spring-cloud/spring-cloud-sleuth/issues/124">supported by Spring yet</a> </b>
  
  <pre>
-----http://localhost:8008/open---> [ Gateway app : AsyncController class ] 
+----http://localhost:8008/async/open---> [ Gateway app : AsyncController class ] 
                                      -------http://localhost:8081/openTrade----> [market-gw app : MarketController class]
                                      {Nio thread}<-----Trade---------------------------
                                             ...
